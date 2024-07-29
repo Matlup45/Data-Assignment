@@ -1,0 +1,42 @@
+Problem 5: Time Series SQL Queries
+->
+-- Common Table Expression (CTE) to order data and find overlapping intervals
+WITH OrderedData AS (
+    SELECT
+        name,
+        start_time,
+        end_time,
+        activity,
+        LAG(end_time) OVER (PARTITION BY name ORDER BY start_time) AS prev_end_time
+    FROM bot_work
+),
+MergedIntervals AS (
+    SELECT
+        name,
+        start_time,
+        end_time,
+        activity,
+        ROW_NUMBER() OVER (PARTITION BY name ORDER BY start_time) AS row_num,
+        CASE
+            WHEN start_time <= prev_end_time THEN 0
+            ELSE 1
+        END AS new_interval
+    FROM OrderedData
+),
+IntervalGroups AS (
+    SELECT
+        name,
+        start_time,
+        end_time,
+        activity,
+        SUM(new_interval) OVER (PARTITION BY name ORDER BY row_num) AS interval_group
+    FROM MergedIntervals
+)
+SELECT
+    name,
+    MIN(start_time) AS start_time,
+    MAX(end_time) AS end_time,
+    STRING_AGG(activity, ',') AS activities
+FROM IntervalGroups
+GROUP BY name, interval_group
+ORDER BY name, start_time;

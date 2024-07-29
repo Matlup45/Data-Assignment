@@ -1,0 +1,123 @@
+### Problem 2: SQL (related to Problem 1)
+
+With the above data, write SQL queries for the following:
+
+1. Retrieve the top 5 customers who have made the highest average order amounts in the last 6 months. The average order amount should be calculated for each customer, and the result should be sorted in descending order.
+->
+SELECT 
+    c.customer_id, 
+    c.name, 
+    AVG(o.total_amount) AS avg_order_amount
+FROM 
+    Order o
+JOIN 
+    Customer c ON o.customer_id = c.customer_id
+WHERE 
+    o.order_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+GROUP BY 
+    c.customer_id, 
+    c.name
+ORDER BY 
+    avg_order_amount DESC
+LIMIT 5;
+
+
+2. Retrieve the list of customer whose order value is lower this year as compared to previous year.
+->
+SELECT 
+    c.customer_id, 
+    c.name,
+    SUM(CASE WHEN YEAR(o.order_date) = YEAR(CURDATE()) THEN o.total_amount ELSE 0 END) AS current_year_total,
+    SUM(CASE WHEN YEAR(o.order_date) = YEAR(CURDATE()) - 1 THEN o.total_amount ELSE 0 END) AS previous_year_total
+FROM 
+    Order o
+JOIN 
+    Customer c ON o.customer_id = c.customer_id
+GROUP BY 
+    c.customer_id, 
+    c.name
+HAVING 
+    current_year_total < previous_year_total;
+
+
+
+
+3. Create a table showing cumulative purchase by a particular customer. Show the breakup of cumulative purchases by product category.
+->
+SELECT 
+    c.customer_id,
+    c.name,
+    p.category,
+    SUM(oi.price * oi.quantity) AS cumulative_purchase
+FROM 
+    Order o
+JOIN 
+    OrderItem oi ON o.order_id = oi.order_id
+JOIN 
+    Variant v ON oi.variant_id = v.variant_id
+JOIN 
+    Product p ON v.product_id = p.product_id
+JOIN 
+    Customer c ON o.customer_id = c.customer_id
+GROUP BY 
+    c.customer_id, 
+    c.name, 
+    p.category;
+
+
+
+
+4. Retrieve the list of top 5 selling products. Further bifurcate the sales by product variants.
+->
+WITH ProductSales AS (
+    SELECT 
+        p.product_id, 
+        p.name AS product_name,
+        v.variant_id, 
+        v.color, 
+        v.size, 
+        SUM(oi.quantity) AS total_quantity_sold,
+        SUM(oi.price * oi.quantity) AS total_sales
+    FROM 
+        OrderItem oi
+    JOIN 
+        Variant v ON oi.variant_id = v.variant_id
+    JOIN 
+        Product p ON v.product_id = p.product_id
+    GROUP BY 
+        p.product_id, 
+        p.name, 
+        v.variant_id, 
+        v.color, 
+        v.size
+),
+TopProducts AS (
+    SELECT 
+        ps.product_id, 
+        ps.product_name, 
+        SUM(ps.total_quantity_sold) AS total_quantity_sold
+    FROM 
+        ProductSales ps
+    GROUP BY 
+        ps.product_id, 
+        ps.product_name
+    ORDER BY 
+        total_quantity_sold DESC
+    LIMIT 5
+)
+SELECT 
+    tp.product_id, 
+    tp.product_name, 
+    ps.variant_id, 
+    ps.color, 
+    ps.size, 
+    ps.total_quantity_sold, 
+    ps.total_sales
+FROM 
+    TopProducts tp
+JOIN 
+    ProductSales ps ON tp.product_id = ps.product_id
+ORDER BY 
+    tp.total_quantity_sold DESC, 
+    ps.variant_id;
+
