@@ -9,7 +9,7 @@ SQL Queries
 Machine Learning
 Time Series Analysis*
 
-**Problem 1: Data Modeling**
+# **Problem 1: Data Modeling**
 Overview
 Design a database for an e-commerce platform with the following requirements:
 
@@ -22,7 +22,7 @@ Files
 *Data_Modelling.ipynb*: Jupyter notebook containing the data model design and random data generation code.
 *ERD.drawio.png*: Entity-Relationship Diagram for the database.
 
-**Problem 2: SQL Queries**
+# **Problem 2: SQL Queries**
 Overview
 Write SQL queries for the following:
 
@@ -35,7 +35,7 @@ Files
 *Problem 2 SQL.txt*: Text file containing SQL queries for the tasks.
 
 
-**Problem 4: Machine Learning**
+# **Problem 4: Machine Learning**
 Overview
 Analyze anonymized loan application data to predict credit risk using machine learning models.
 
@@ -48,7 +48,7 @@ Perform EDA and segment customers based on risk.
 Develop at least two ML models to predict credit risk.
 Explain feature selection, handle missing values, and evaluate models using confusion matrices.
 
-**Problem 5: Time Series Analysi**
+# **Problem 5: Time Series Analysi**
 Overview
 Analyze work done by AGI bots, which can multi-task. Determine continuous work periods and aggregate activities.
 
