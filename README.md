@@ -51,14 +51,13 @@ Files:
 
 *program.csv, work.csv, soloists.csv, concerts.csv*: Output CSV files containing the transformed data.
 
-*ERD.png*: Entity-Relationship Diagram showing relationships between the normalized data tables.
-Problem 3 ETL SQL.txt: SQL file for the ETL process.
+*ERD_jsonFile.png*: Entity-Relationship Diagram showing relationships between the normalized data tables.
 
 Instructions:
 
 Load and transform the nested JSON data into normalized tables.
 Generate an ERD to show relationships between the entities.
-Implement the transformation using Python and SQL.
+Implement the transformation using Python
 
 # **Problem 4: Machine Learning**
 Overview:
