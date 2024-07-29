@@ -39,6 +39,27 @@ Files:
 *Problem 2 SQL.txt* : Text file containing SQL queries for the tasks.
 
 
+# **Problem 3: ETL**
+
+Overview:
+
+Transform nested JSON data related to orchestras, their concerts, works, and artists into a normalized format for easier analysis.
+
+Files:
+
+**Problem 3 ETL.ipynb**: Jupyter notebook performing data transformations and normalization.
+
+*program.csv, work.csv, soloists.csv, concerts.csv*: Output CSV files containing the transformed data.
+
+*ERD.png*: Entity-Relationship Diagram showing relationships between the normalized data tables.
+Problem 3 ETL SQL.txt: SQL file for the ETL process.
+
+Instructions:
+
+Load and transform the nested JSON data into normalized tables.
+Generate an ERD to show relationships between the entities.
+Implement the transformation using Python and SQL.
+
 # **Problem 4: Machine Learning**
 Overview:
 
